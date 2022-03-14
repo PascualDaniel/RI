@@ -1,0 +1,103 @@
+
+* Administrador. Generación automática de bonos: por 3 averías.
+
+Bono 20: Por 3 averías
+A cualquier cliente se le puede emitir un bono por valor de 20€ siempre y cuando se cumplan 
+ciertos requisitos:
+a) El cliente tiene 3 averías facturadas en el taller.
+b) La factura o facturas de esas 3 averías debe estar pagada.
+La descripción del campo de este cupón será "Por tres ordenes de trabajo".
+Las averías utilizadas para generar este bono, no deberían haberse utilizado para generar otro 
+bono y no se pueden volver a utilizar para generar otro bon
+
+
+
+Emitir (Action) --> Mirar Averias FACtURADAS > 3(Count) y no utilizadas  --> con fauturas id mirar fatura o facturas pagadas 
+
+
+BonoGatewat 
+	-ADD
+FacturaGateway
+
+
+
+ Action
+	|-GetWorkOrderNotUsesByID( clientID)
+		|
+		->GetVehiclesID(ClientId)
+		  |	
+		  ->foreach vehicleID get workorder where used == false
+			|
+			->if (count >3) get 3                --> set used true
+				|								 |
+				->foreach workoreder get Invoice |
+					|							 |
+					-> if status ==		 pagada go     else rollback
+						|
+						->create bono
+						
+
+
+
+
+
+* Jefe Taller. Gestión de Clientes.
+
+
+Jefe de Taller. Gestión de clientes
+ La aplicación permitirá al jefe de taller 
+	-agregar nuevos clientes, 
+	-buscar los existentes,
+	-realizar cambios en ellos 
+	-eliminarlos (CRUD).
+	
+*Crear nuevo cliente
+ Cuando un cliente llega al taller por primera vez, el jefe de taller lo agregará al sistema. 
+ Para añadir un nuevo cliente, el el jefe de taller intorducirá su DNI, nombre, apellidos, dirección 
+ postal, número de teléfono y correo electrónico.
+ No todos los campos son obligatorios, solo DNI.
+
+
+
+ Al dar de alta un cliente, el sistema, de forma automática, le creará y asociará un medio de pago 
+ de tipo “metálico”.
+ (Associate MEtalic paiment)
+
+ Si el nuevo cliente ha sido recomendado por alguien (llamémosle patrocinador/sponsor) y 
+ el patrocinador también es un cliente con al menos una factura pagada, 
+ se registrará la recomendación en el sistema. El cliente puede ser recomendado por otro cliente, y 
+ solo uno.
+ 
+ 
+
+
+*Actualizar un cliente
+ Todos los campos pueden ser editados, excepto id y DNI.
+
+*Eliminar un cliente
+ Un cliente puede ser eliminado solo si no hay vehículos registrados a su nombre en el sistema. 
+
+ Luego, sus métodos de pago
+ y las recomendaciones que hizo, 
+ y las que pudo haber recibido 
+ también serán eliminadas.
+ 
+ Chequear id -> chequear vehiculos -> borrar recomendaciones hizo -> borrar recomendaciones recividas->borrar metodos de pago->borrar cliente.
+ 
+
+*Lista de clientes
+ Hay tres listados que se deberán implementar: 
+	-enumerar todos los clientes, 
+	-ver los detalles de un cliente 
+	
+	
+	(Recomendation)
+	-y enumerar los clientes recomendados por un cliente específico.
+
+
+
+
+
+
+
+
